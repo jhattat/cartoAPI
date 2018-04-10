@@ -19,7 +19,7 @@ namespace ObsApi
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<ObsContext>(opt => opt.UseInMemoryDatabase("ObsList"));
-            services.AddDbContext<AzureDbContext>(_ => _.UseSqlServer("Server=observationserver.database.windows.net,1433;Initial Catalog=ObservationFacileDB;Persist Security Info=False;User ID=administrateur;Password=***REMOVED***;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<AzureDbContext>(_ => _.UseSqlServer("Server=observationserver.database.windows.net,1433;Initial Catalog=ObservationFacileDB;Persist Security Info=False;User ID=administrateur;Password=xxxxx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddMvc();
 
             
