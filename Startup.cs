@@ -21,6 +21,7 @@ namespace ObsApi
             //services.AddDbContext<ObsContext>(opt => opt.UseInMemoryDatabase("ObsList"));
             services.AddDbContext<AzureDbContext>(_ => _.UseSqlServer("Server=observationserver.database.windows.net,1433;Initial Catalog=ObservationFacileDB;Persist Security Info=False;User ID=administrateur;Password=***REMOVED***;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddMvc();
+            services.AddCors();
 
             
 
@@ -37,7 +38,7 @@ namespace ObsApi
             {
                     var context = serviceScope.ServiceProvider.GetRequiredService<AzureDbContext>();
                     
-                    context.Database.EnsureCreated();
+                    //context.Database.EnsureCreated();
             }
                     app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
@@ -46,7 +47,9 @@ namespace ObsApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
+            app.UseCors( options => options.WithOrigins("http://localhost:4200").AllowAnyMethod() );
             app.UseMvc();
+ 
         }
     }
 }
