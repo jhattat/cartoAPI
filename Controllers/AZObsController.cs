@@ -15,6 +15,7 @@ namespace AZObsApi.Controllers
         {
             _context = context;
 
+            //create at least one item
             if (_context.AZObsItems.Count() == 0)
             {
                 _context.AZObsItems.Add(new AZObsItem { Name = "Item1" });
