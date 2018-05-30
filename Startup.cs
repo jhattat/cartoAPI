@@ -16,10 +16,24 @@ namespace ObsApi
 {
     public class Startup
     {       
+
+        public IConfiguration Configuration { get; private set; }
+
+         public Startup(IConfiguration configuration)
+        {
+            this.Configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<ObsContext>(opt => opt.UseInMemoryDatabase("ObsList"));
-            services.AddDbContext<AzureDbContext>(_ => _.UseSqlServer("Server=observationserver.database.windows.net,1433;Initial Catalog=ObservationFacileDB;Persist Security Info=False;User ID=administrateur;Password=xxxxx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            var connString = Configuration.GetConnectionString("DefaultConnection");
+            System.Console.WriteLine($"Voici la config : {connString}");
+            var connDocker = Configuration.GetConnectionString("DockerConnection");
+            System.Console.WriteLine($"Voici la config : {connDocker}");
+            
+            services.AddDbContext<AzureDbContext>(_ => _.UseSqlServer(connDocker));
+ //           Server=127.0.0.1,4433;Initial Catalog=GeoDB;Persist Security Info=False;User ID=SA;Password=Test@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddMvc();
             services.AddCors();
 
