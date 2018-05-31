@@ -4,9 +4,10 @@ using ObsApi.Models;
 using System.Linq;
 using obsApi.Database;
 
+
 namespace AZObsApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class AZObsController : Controller
     {
         private readonly AzureDbContext _context;
@@ -59,14 +60,15 @@ namespace AZObsApi.Controllers
             _context.AZObsItems.Add(item);
             _context.SaveChanges();
             GeneralDB.UpdateLocation(_context, "AZObsItems", item.Geo, item.Id);
-            
-
             return CreatedAtRoute("GetAZObs", new { id = item.Id }, item);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] AZObsItem item)
+        public IActionResult Update(long id, [FromBody] AZObsItemDto item)
         {
+            if (!ModelState.IsValid)
+                 return BadRequest(ModelState);
+
             if (item == null || item.Id != id)
             {
                 return BadRequest();
@@ -84,7 +86,7 @@ namespace AZObsApi.Controllers
 
             _context.AZObsItems.Update(AZObs);
             _context.SaveChanges();
-            GeneralDB.UpdateLocation(_context, "AZObsItems", item.Geo, item.Id);
+            //GeneralDB.UpdateLocation(_context, "AZObsItems", item.Geo, item.Id);
             return new NoContentResult();
         }
 
